@@ -3,19 +3,24 @@ import Footer from "./Footer";
 import MenuItem from "./MenuItem";
 import Profile from "./Profile";
 
-const SideBar = () => {
+interface SideBarProps {
+  activeMenu : string
+}
+
+const SideBar = (props: SideBarProps) => {
+  const {activeMenu} = props
   return (
     <section className="sidebar">
       <div className="content pt-50 pb-30 ps-30">
         <Profile />
         <div className="menus">
-            <MenuItem title="Overview" icon="ic-overview" active/>
-            <MenuItem title="Transactions" icon="ic-transactions" href="/member/transactions"/>
-            <MenuItem title="Messages" icon="ic-messages" />
-            <MenuItem title="Card" icon="ic-card" />
-            <MenuItem title="Rewards" icon="ic-rewards" />
-            <MenuItem title="Settings" icon="ic-settings" href="/member/edit-profile"/>
-            <MenuItem title="Log Out" icon="ic-logout" />
+            <MenuItem title="Overview" icon="ic-overview" active = {activeMenu === "Overview"} />
+            <MenuItem title="Transactions" icon="ic-transactions" href="/member/transactions" active = {activeMenu === "Transactions"}/>
+            <MenuItem title="Messages" icon="ic-messages" active = {activeMenu === "Messages"}/>
+            <MenuItem title="Card" icon="ic-card" active = {activeMenu === "Card"}/>
+            <MenuItem title="Rewards" icon="ic-rewards" active = {activeMenu === "Rewards"}/>
+            <MenuItem title="Settings" icon="ic-settings" href="/member/edit-profile" active = {activeMenu === "Settings"}/>
+            <MenuItem title="Log Out" icon="ic-logout" href="/sign-in" active = {activeMenu === "Log Out"}/>
         </div>
         <Footer />
       </div>

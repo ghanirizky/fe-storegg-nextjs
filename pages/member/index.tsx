@@ -5,7 +5,7 @@ const MemberPage = () => {
   return (
     <>
       <section className="overview overflow-auto">
-        <SideBar />
+        <SideBar activeMenu="Overview"/>
         <OverviewContent />
       </section>
     </>

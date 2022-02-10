@@ -1,6 +1,9 @@
+import SideBar from "../../../components/organisms/SideBar";
+
 const MemberTransactionDetail = () => {
   return (
     <>
+    <SideBar activeMenu="Transactions" />
       <section className="transactions overflow-auto">
         <main className="main-wrapper">
           <div className="ps-lg-0">

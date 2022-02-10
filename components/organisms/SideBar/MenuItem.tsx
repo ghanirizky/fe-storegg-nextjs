@@ -17,7 +17,7 @@ interface MenuItemProps {
 }
 
 const MenuItem = (props: Partial<MenuItemProps>) => {
-  const { title, icon, active, href = "/" } = props;
+  const { title, icon, active, href = "/member" } = props;
 
   const classItem = cx({
     item: true,
