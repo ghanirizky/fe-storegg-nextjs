@@ -5,7 +5,7 @@ interface ListItemProps {
 const ListItem = (props: ListItemProps) => {
   const { desc } = props;
   return (
-    <li className="mb-6">
+    <li className="mb-6" key={1}>
       <a href="" className="text-lg color-palette-1 text-decoration-none">
         {desc}
       </a>
