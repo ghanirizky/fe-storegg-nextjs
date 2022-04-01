@@ -32,3 +32,14 @@ export interface NominalTypes {
     coinName : string 
     price : number
 }
+
+export interface PlayerTypes {
+  _id : string
+  avatar? : string
+  email : string
+  favorite : string
+  name : string
+  role? : string
+  status? : string
+  username : string
+}

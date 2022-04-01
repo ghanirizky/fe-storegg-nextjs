@@ -1,4 +1,22 @@
+import { useRouter } from "next/router";
+import { useState } from "react";
+
 const SignUpForm = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  const onContinue = () => {
+    const userForm = {
+      name,
+      email,
+      password,
+    };
+    localStorage.setItem("user-form", JSON.stringify(userForm));
+    router.push("/sign-up-photo");
+  };
+
   return (
     <>
       <h2 className="text-4xl fw-bold color-palette-1 mb-10">Sign Up</h2>
@@ -7,7 +25,7 @@ const SignUpForm = () => {
       </p>
       <div className="pt-50">
         <label
-          for="name"
+          htmlFor="name"
           className="form-label text-lg fw-medium color-palette-1 mb-10"
         >
           Full Name
@@ -15,15 +33,16 @@ const SignUpForm = () => {
         <input
           type="text"
           className="form-control rounded-pill text-lg"
-          id="name"
-          name="name"
           aria-describedby="name"
           placeholder="Enter your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
         />
       </div>
       <div className="pt-30">
         <label
-          for="email"
+          htmlFor="email"
           className="form-label text-lg fw-medium color-palette-1 mb-10"
         >
           Email Address
@@ -31,15 +50,16 @@ const SignUpForm = () => {
         <input
           type="email"
           className="form-control rounded-pill text-lg"
-          id="email"
-          name="email"
           aria-describedby="email"
           placeholder="Enter your email address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
         />
       </div>
       <div className="pt-30">
         <label
-          for="password"
+          htmlFor="password"
           className="form-label text-lg fw-medium color-palette-1 mb-10"
         >
           Password
@@ -47,20 +67,21 @@ const SignUpForm = () => {
         <input
           type="password"
           className="form-control rounded-pill text-lg"
-          id="password"
-          name="password"
           aria-describedby="password"
           placeholder="Your password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
         />
       </div>
       <div className="button-group d-flex flex-column mx-auto pt-50">
-        <a
+        <button
           className="btn btn-sign-up fw-medium text-lg text-white rounded-pill mb-16"
-          href="/sign-up-photo"
-          role="button"
+          type="button"
+          onClick={onContinue}
         >
           Continue
-        </a>
+        </button>
         <a
           className="btn btn-sign-in fw-medium text-lg color-palette-1 rounded-pill"
           href="/sign-in"
