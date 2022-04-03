@@ -5,6 +5,8 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { signIn } from "../../../services/auth";
+import Cookies from 'js-cookie'
+
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
@@ -19,8 +21,14 @@ const SignInForm = () => {
     const result = await signIn(payload);
 
     if (result.error) return toast.error(result.message);
-    
-    router.push("/");
+
+    const {token} = result.data
+    const tokenBase64 = btoa(token)
+    Cookies.set('token', tokenBase64, {expires : 1})
+    toast.success("Login berhasil");
+    setTimeout(() => {
+      router.push("/");
+    }, 1500);
   };
 
   return (

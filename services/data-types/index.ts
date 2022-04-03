@@ -43,3 +43,13 @@ export interface PlayerTypes {
   status? : string
   username : string
 }
+
+export interface LoginTypes {
+  email : string,
+  password : string
+}
+
+export interface JWTPayloadTypes {
+  player : PlayerTypes,
+  iat : string
+}
