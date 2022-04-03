@@ -2,8 +2,16 @@ import Image from "next/image";
 import CheckoutConfirmation from "../components/organisms/CheckoutConfirmation";
 import CheckoutDetail from "../components/organisms/CheckoutDetail";
 import CheckoutItem from "../components/organisms/CheckoutItem";
+import jwtDecode from "jwt-decode";
+import { JWTPayloadTypes, PlayerTypes } from "../services/data-types";
+import { AppProps } from "next/app";
 
-const CheckoutPage = () => {
+interface CheckoutProps {
+  user : PlayerTypes
+}
+
+const CheckoutPage = (props: CheckoutProps) => {
+  const {user} = props //Di dapat dari getServerSideProps Note: berbeda dengan Auth yang client side
   return (
     <>
       <section className="checkout mx-auto pt-md-100 pb-md-145 pt-30 pb-30">
@@ -33,3 +41,25 @@ const CheckoutPage = () => {
 };
 
 export default CheckoutPage;
+
+export const getServerSideProps = ({ req } : any) => {
+  const { token } = req.cookies;
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/sign-in",
+        pemanent: false,
+      },
+    };
+  }
+
+  const jwtToken: string = Buffer.from(token, 'base64').toString('ascii')
+  const payload: JWTPayloadTypes = jwtDecode(jwtToken);
+  const user : PlayerTypes = payload.player
+  return {
+    props: {
+      user,
+    },
+  };
+};
