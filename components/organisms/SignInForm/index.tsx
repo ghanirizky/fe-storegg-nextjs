@@ -1,8 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { signIn } from "../../../services/auth";
+
 const SignInForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  const onSubmit = async () => {
+    const payload = { email, password };
+    if (!email || !password)
+      return toast.error("Email dan Password wajib di isi");
+
+    const result = await signIn(payload);
+
+    if (result.error) return toast.error(result.message);
+    
+    router.push("/");
+  };
+
   return (
     <>
+      <ToastContainer />
       <form action="">
         <div className="container mx-auto">
           <div className="pb-50">
@@ -18,7 +41,7 @@ const SignInForm = () => {
           </p>
           <div className="pt-50">
             <label
-              for="email"
+              htmlFor="email"
               className="form-label text-lg fw-medium color-palette-1 mb-10"
             >
               Email Address
@@ -26,15 +49,15 @@ const SignInForm = () => {
             <input
               type="email"
               className="form-control rounded-pill text-lg"
-              id="email"
-              name="email"
               aria-describedby="email"
               placeholder="Enter your email address"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
             />
           </div>
           <div className="pt-30">
             <label
-              for="password"
+              htmlFor="password"
               className="form-label text-lg fw-medium color-palette-1 mb-10"
             >
               Password
@@ -42,27 +65,29 @@ const SignInForm = () => {
             <input
               type="password"
               className="form-control rounded-pill text-lg"
-              id="password"
-              name="password"
+              onChange={(e) => setPassword(e.target.value)}
               aria-describedby="password"
               placeholder="Your password"
+              value={password}
             />
           </div>
           <div className="button-group d-flex flex-column mx-auto pt-50">
-            <a
+            <button
               className="btn btn-sign-in fw-medium text-lg text-white rounded-pill mb-16"
-              href="../index.html"
-              role="button"
+              type="button"
+              onClick={onSubmit}
             >
               Continue to Sign In
-            </a>
-            <a
-              className="btn btn-sign-up fw-medium text-lg color-palette-1 rounded-pill"
-              href="/sign-up"
-              role="button"
-            >
-              Sign Up
-            </a>
+            </button>
+
+            <Link href="/sign-up">
+              <a
+                className="btn btn-sign-up fw-medium text-lg color-palette-1 rounded-pill"
+                role="button"
+              >
+                Sign Up
+              </a>
+            </Link>
           </div>
         </div>
       </form>

@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { setSignUp } from "../services/auth";
 import { CategoryTypes } from "../services/data-types";
 import { getGameCategory } from "../services/player";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignUpPhotoPage = () => {
   const [gameCategory, setGameCategory] = useState([]);
@@ -11,12 +13,12 @@ const SignUpPhotoPage = () => {
   const [image, setImage] = useState<any>([]);
   const [imagePreview, setImagePreview] = useState(`/icon/upload.svg`);
   const [userForm, setUserForm] = useState({
-    name : '',
-    email : '',
-    password : ''
-  })
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  const router = useRouter()
+  const router = useRouter();
 
   const getGameCategoryAPI = useCallback(async () => {
     const response = await getGameCategory();
@@ -25,30 +27,32 @@ const SignUpPhotoPage = () => {
   }, [getGameCategory]);
 
   const getUserForm = useCallback(async () => {
-    let localStorageUser = await localStorage.getItem('user-form')
-    setUserForm(JSON.parse(localStorageUser ?? ''))
-  }, [])
+    let localStorageUser = await localStorage.getItem("user-form");
+    if (localStorageUser) setUserForm(JSON.parse(localStorageUser));
+    else router.push("/sign-up");
+  }, []);
 
-  const onSubmit = async() => {
-    
-    const payload:any = new FormData()
-    payload.append('image', image)
-    payload.append('email', userForm.email)
-    payload.append('password', userForm.password)
-    payload.append('name', userForm.name)
-    payload.append('favorite', favCategory)
-    payload.append('username', userForm.name)
-    // payload.append('image', image)
+  const onSubmit = async () => {
+    const payload: any = new FormData();
+    payload.append("image", image);
+    payload.append("email", userForm.email);
+    payload.append("password", userForm.password);
+    payload.append("name", userForm.name);
+    payload.append("favorite", favCategory);
+    payload.append("username", userForm.name);
 
-    const result = await setSignUp(payload)
-    
-    if(result) router.push('/')
+    const result = await setSignUp(payload);
+
+    if (result.error) return toast.error(result.message);
+
+    localStorage.removeItem("user-form");
+    router.push("/sign-up-success");
 
   };
 
   useEffect(() => {
     getGameCategoryAPI();
-    getUserForm()
+    getUserForm();
   }, []);
 
   return (
@@ -116,7 +120,6 @@ const SignUpPhotoPage = () => {
               <div className="button-group d-flex flex-column mx-auto">
                 <button
                   className="btn btn-create fw-medium text-lg text-white rounded-pill mb-16"
-                  
                   onClick={onSubmit}
                   type="button"
                 >
@@ -134,6 +137,7 @@ const SignUpPhotoPage = () => {
             </div>
           </form>
         </div>
+        <ToastContainer />
       </section>
     </>
   );
