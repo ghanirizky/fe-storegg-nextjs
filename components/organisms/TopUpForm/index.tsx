@@ -1,20 +1,55 @@
-import { NominalTypes, PaymentTypes } from "../../../services/data-types";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import {
+  NominalTypes,
+  PaymentTypes,
+  VoucherTypes,
+} from "../../../services/data-types";
 import NominalItem from "./NominalItem";
 import PaymentItem from "./PaymentItem";
 
 interface TopUpFormProps {
   nominals: NominalTypes[];
   payments: PaymentTypes[];
+  voucher: VoucherTypes | undefined;
 }
 
 const TopUpForm = (prop: TopUpFormProps) => {
-  const { nominals, payments } = prop;
+  const [bankAccountName, setBankAccountName] = useState("");
+  const [verifiedId, setVerifiedId] = useState("");
+  const [nominalItem, setNominalItem] = useState({});
+  const [paymentItem, setPaymentItem] = useState({});
+  const { nominals, payments, voucher } = prop;
+
+  const router = useRouter();
+  const onSubmit = () => {
+    if (
+      verifiedId === "" ||
+      bankAccountName === "" ||
+      nominalItem === {} ||
+      paymentItem === {}
+    ) {
+      alert("Silahkan semua isi data !!!");
+      return;
+    }
+
+    const checkOutPayload = {
+      voucher,
+      verifiedId,
+      bankAccountName,
+      nominalItem,
+      paymentItem,
+    };
+    localStorage.setItem("data-topup", JSON.stringify(checkOutPayload));
+    router.push("/checkout");
+  };
+
   return (
     <form action="./checkout.html" method="POST">
       <div className="pt-md-50 pt-30">
         <div className="">
           <label
-            for="ID"
+            htmlFor="ID"
             className="form-label text-lg fw-medium color-palette-1 mb-10"
           >
             Verify ID
@@ -26,6 +61,8 @@ const TopUpForm = (prop: TopUpFormProps) => {
             name="ID"
             aria-describedby="verifyID"
             placeholder="Enter your ID"
+            value={verifiedId}
+            onChange={(e) => setVerifiedId(e.target.value)}
           />
         </div>
       </div>
@@ -42,6 +79,7 @@ const TopUpForm = (prop: TopUpFormProps) => {
                 coinQuantity={nominal.coinQuantity}
                 coinName={nominal.coinName}
                 price={nominal.price}
+                onChange={() => setNominalItem(nominal)}
               />
             );
           })}
@@ -63,6 +101,7 @@ const TopUpForm = (prop: TopUpFormProps) => {
                     bankID={bank?._id}
                     type={payment.type}
                     name={bank?.bankName}
+                    onChange={() => setPaymentItem({ payment, bank })}
                   />
                 );
               });
@@ -85,16 +124,18 @@ const TopUpForm = (prop: TopUpFormProps) => {
           name="bankAccount"
           aria-describedby="bankAccount"
           placeholder="Enter your Bank Account Name"
+          value={bankAccountName}
+          onChange={(e) => setBankAccountName(e.target.value)}
         />
       </div>
       <div className="d-sm-block d-flex flex-column w-100">
-        <a
-          href="/checkout"
-          type="submit"
+        <button
+          type="button"
           className="btn btn-submit rounded-pill fw-medium text-white border-0 text-lg"
+          onClick={onSubmit}
         >
           Continue
-        </a>
+        </button>
       </div>
     </form>
   );

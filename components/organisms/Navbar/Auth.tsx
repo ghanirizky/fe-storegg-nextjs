@@ -10,7 +10,7 @@ interface AuthProps {
   isLogin?: boolean;
 }
 
-const Auth = (props: Partial<AuthProps>) => {
+const Auth = () => {
   const [avatar, setAvatar] = useState("");
   const [isLogin, setIsLogin] = useState(false);
   const router = useRouter()

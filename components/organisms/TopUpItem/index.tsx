@@ -1,12 +1,8 @@
+import { VoucherTypes } from "../../../services/data-types";
+
 interface TopUpItemProps {
   type: "desktop" | "mobile";
-  data: {
-    name : string,
-    thumbnail : string,
-    category : {
-      name : string
-    }
-  }
+  data: VoucherTypes | undefined
 }
 
 const TopUpItem = (props: TopUpItemProps) => {

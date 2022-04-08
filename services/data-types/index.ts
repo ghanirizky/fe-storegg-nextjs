@@ -53,3 +53,20 @@ export interface JWTPayloadTypes {
   player : PlayerTypes,
   iat : string
 }
+
+export interface UserTypes {
+  _id : string,
+  phoneNumber : string,
+  name : string
+}
+
+export interface VoucherTypes {
+  _id : string,
+  name : string,
+  user : UserTypes,
+  thumbnail : string,
+  nominals : NominalTypes,
+  status : string,
+  isFeatured : string,
+  category : CategoryTypes
+}

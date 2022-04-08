@@ -4,23 +4,19 @@ import Footer from "../../components/organisms/Footer";
 import Navbar from "../../components/organisms/Navbar";
 import TopUpForm from "../../components/organisms/TopUpForm";
 import TopUpItem from "../../components/organisms/TopUpItem";
+import { VoucherTypes } from "../../services/data-types";
 import { getVoucherDetail } from "../../services/player";
 
 const DetailPage = () => {
   const { query, isReady } = useRouter();
-  const [voucher, setVoucher] = useState({
-    name : '',
-    thumbnail : '',
-    category : {
-      name : ''
-    }
-  })
+  const [voucher, setVoucher] = useState<VoucherTypes>()
   const [nominals, setNominals] = useState([])
   const [payments, setPayments] = useState([])
 
   const getVoucherDetailAPI = useCallback(async (id: any) => {
     const data = await getVoucherDetail(id);
     setVoucher(data.voucher)
+    localStorage.setItem('data-item', JSON.stringify(data.voucher))
     setNominals(data.voucher?.nominals)
     setPayments(data.payment)
   }, []);
@@ -49,7 +45,7 @@ const DetailPage = () => {
             <div className="col-xl-9 col-lg-8 col-md-7 ps-md-25">
               <TopUpItem type="desktop" data = {voucher} />
               <hr />
-              <TopUpForm nominals = {nominals} payments = {payments}/>
+              <TopUpForm nominals = {nominals} payments = {payments} voucher ={voucher}/>
             </div>
           </div>
         </div>
