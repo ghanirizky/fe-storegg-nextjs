@@ -70,3 +70,12 @@ export interface VoucherTypes {
   isFeatured : string,
   category : CategoryTypes
 }
+
+export interface CheckOutPayloadTypes {
+  voucher: string;
+  nominal: string;
+  payment: string;
+  bank: string;
+  name: string;
+  accountUser: string;
+}

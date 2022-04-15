@@ -1,6 +1,27 @@
 import React from "react";
+import {
+  BankTypes,
+  NominalTypes,
+  PaymentTypes,
+} from "../../../services/data-types";
+import NumberFormat from "react-number-format";
 
-const CheckoutDetail = () => {
+interface CheckoutPaymentTypes {
+  bank: BankTypes;
+  payment: PaymentTypes;
+}
+
+interface CheckoutDetailProps {
+  accountId: string;
+  bankAccName: string;
+  nominalItem: NominalTypes;
+  paymentItem: CheckoutPaymentTypes;
+}
+
+const CheckoutDetail = (props: CheckoutDetailProps) => {
+  const { nominalItem, paymentItem, accountId, bankAccName } = props;
+  const tax = nominalItem?.price * 0.1;
+
   return (
     <>
       <div className="purchase pt-md-50 pt-30">
@@ -8,24 +29,50 @@ const CheckoutDetail = () => {
           Purchase Details
         </h2>
         <p className="text-lg color-palette-1 mb-20">
-          Your Game ID <span className="purchase-details">masayoshizero</span>
+          Your Game ID{" "}
+          <span className="purchase-details">{accountId ?? "-"}</span>
         </p>
         <p className="text-lg color-palette-1 mb-20">
           Order ID <span className="purchase-details">#GG001</span>
         </p>
         <p className="text-lg color-palette-1 mb-20">
-          Item <span className="purchase-details">250 Diamonds</span>
+          Item{" "}
+          <span className="purchase-details">{`${nominalItem?.coinQuantity} ${nominalItem?.coinName}`}</span>
         </p>
         <p className="text-lg color-palette-1 mb-20">
-          Price <span className="purchase-details">Rp 42.280.500</span>
+          Price{" "}
+          <span className="purchase-details">
+            <NumberFormat
+              value={nominalItem?.price}
+              displayType={"text"}
+              thousandSeparator="."
+              decimalSeparator=","
+              prefix={"Rp "}
+            />
+          </span>
         </p>
         <p className="text-lg color-palette-1 mb-20">
-          Tax (10%) <span className="purchase-details">Rp 4.228.000</span>
+          Tax (10%){" "}
+          <span className="purchase-details">
+            <NumberFormat
+              value={tax}
+              displayType={"text"}
+              thousandSeparator="."
+              decimalSeparator=","
+              prefix={"Rp "}
+            />
+          </span>
         </p>
         <p className="text-lg color-palette-1 mb-20">
           Total{" "}
           <span className="purchase-details color-palette-4">
-            Rp 55.000.600
+            <NumberFormat
+              value={nominalItem?.price + tax}
+              displayType={"text"}
+              thousandSeparator="."
+              decimalSeparator=","
+              prefix={"Rp "}
+            />
           </span>
         </p>
       </div>
@@ -35,21 +82,25 @@ const CheckoutDetail = () => {
         </h2>
         <p className="text-lg color-palette-1 mb-20">
           Your Account Name{" "}
-          <span className="purchase-details">Masayoshi Angga Zero</span>
+          <span className="purchase-details">{bankAccName}</span>
         </p>
         <p className="text-lg color-palette-1 mb-20">
-          Type <span className="payment-details">Worldwide Transfer</span>
+          Type{" "}
+          <span className="payment-details">{paymentItem?.payment.type}</span>
         </p>
         <p className="text-lg color-palette-1 mb-20">
-          Bank Name <span className="payment-details">Mandiri</span>
+          Bank Name{" "}
+          <span className="payment-details">{paymentItem?.bank.bankName}</span>
         </p>
         <p className="text-lg color-palette-1 mb-20">
           Bank Account Name{" "}
-          <span className="payment-details">PT Store GG Indonesia</span>
+          <span className="payment-details">{paymentItem?.bank.name}</span>
         </p>
         <p className="text-lg color-palette-1 mb-20">
           Bank Number{" "}
-          <span className="payment-details">1800 - 9090 - 2021</span>
+          <span className="payment-details">
+            {paymentItem?.bank.noRekening}
+          </span>
         </p>
       </div>
     </>

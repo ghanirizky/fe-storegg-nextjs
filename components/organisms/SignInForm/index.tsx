@@ -2,11 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { signIn } from "../../../services/auth";
-import Cookies from 'js-cookie'
-
+import Cookies from "js-cookie";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
@@ -22,9 +20,9 @@ const SignInForm = () => {
 
     if (result.error) return toast.error(result.message);
 
-    const {token} = result.data
-    const tokenBase64 = btoa(token)
-    Cookies.set('token', tokenBase64, {expires : 1})
+    const { token } = result.data;
+    const tokenBase64 = btoa(token);
+    Cookies.set("token", tokenBase64, { expires: 1 });
     toast.success("Login berhasil");
     setTimeout(() => {
       router.push("/");
@@ -33,7 +31,6 @@ const SignInForm = () => {
 
   return (
     <>
-      <ToastContainer />
       <form action="">
         <div className="container mx-auto">
           <div className="pb-50">

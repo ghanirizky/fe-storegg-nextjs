@@ -4,8 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { setSignUp } from "../services/auth";
 import { CategoryTypes } from "../services/data-types";
 import { getGameCategory } from "../services/player";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const SignUpPhotoPage = () => {
   const [gameCategory, setGameCategory] = useState([]);
@@ -47,7 +46,6 @@ const SignUpPhotoPage = () => {
 
     localStorage.removeItem("user-form");
     router.push("/sign-up-success");
-
   };
 
   useEffect(() => {
@@ -137,7 +135,6 @@ const SignUpPhotoPage = () => {
             </div>
           </form>
         </div>
-        <ToastContainer />
       </section>
     </>
   );
