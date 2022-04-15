@@ -67,6 +67,10 @@
     border-radius: 1rem;
 }
 
+.trans-status {
+    text-transform: capitalize;
+}
+
 @media (max-width:992px){
     .overview main.main-wrapper{
         width: 100%;

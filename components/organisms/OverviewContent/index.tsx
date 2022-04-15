@@ -1,8 +1,19 @@
 import React from "react";
+import {
+  TransactionTypes,
+  TranasctionOverviewTypes,
+} from "../../../services/data-types";
 import Category from "./Category";
 import TableRowItem from "./TableRowItem";
 
-const OverviewContent = () => {
+interface MemberOverview {
+  transHist: TransactionTypes[];
+  transOverview: TranasctionOverviewTypes[];
+}
+
+const OverviewContent = (props: MemberOverview) => {
+  const { transHist, transOverview } = props;
+
   return (
     <main className="main-wrapper">
       <div className="ps-lg-0">
@@ -13,20 +24,17 @@ const OverviewContent = () => {
           </p>
           <div className="main-content">
             <div className="row">
-              <Category nominal={18000500} icon="ic-desktop">
-                Game
-                <br /> Desktop
-              </Category>
-
-              <Category nominal={8455000} icon="ic-mobile">
-                Game
-                <br /> Mobile
-              </Category>
-
-              <Category nominal={5000000} icon="ic-desktop">
-                Other
-                <br /> Categories
-              </Category>
+              {transOverview?.map((item) => {
+                return (
+                  <Category
+                    nominal={item.value}
+                    icon={item.name == "Mobile" ? "ic-mobile" : "ic-desktop"}
+                  >
+                    Game
+                    <br /> {item.name}
+                  </Category>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -47,40 +55,18 @@ const OverviewContent = () => {
                 </tr>
               </thead>
               <tbody>
-                <TableRowItem
-                  icon="overview-1"
-                  game="Mobile Legends: The New Battle 2021"
-                  category="Desktop"
-                  item={200}
-                  price={290000}
-                  status="Pending"
-                />
-                <TableRowItem
-                  icon="overview-2"
-                  game="Call of Duty:Modern"
-                  category="Desktop"
-                  item={550}
-                  price={740000}
-                  status="Success"
-                />
-
-                <TableRowItem
-                  icon="overview-3"
-                  game="Clash of Clans"
-                  category="Mobile"
-                  item={100}
-                  price={120000}
-                  status="Failed"
-                />
-
-                <TableRowItem
-                  icon="overview-4"
-                  game="The Royal Game"
-                  category="Mobile"
-                  item={225}
-                  price={200000}
-                  status="Pending"
-                />
+                {transHist?.map((item) => {
+                  return (
+                    <TableRowItem
+                      icon="overview-1"
+                      game={item.historyVoucherTopup.gameName}
+                      category={item.historyVoucherTopup.category}
+                      item={`${item.historyVoucherTopup.coinQuantity} ${item.historyVoucherTopup.coinName}`}
+                      price={item.historyVoucherTopup.price}
+                      status={item.status}
+                    />
+                  );
+                })}
               </tbody>
             </table>
           </div>

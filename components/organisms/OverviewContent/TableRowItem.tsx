@@ -1,12 +1,14 @@
 import cx from "classnames";
+import { onImageErr } from "../../../helper";
+import FormatRupiah from "../../atoms/FormatRupiah";
 
 interface TableRowItemProps {
-  icon: "overview-1" | "overview-2" | "overview-3" | "overview-4";
+  icon: string;
   game: string;
-  category: "Desktop" | "Mobile";
-  item: number;
+  category: string;
+  item: string;
   price: number;
-  status: "Pending" | "Success" | "Failed";
+  status: "pending" | "success" | "failed";
 }
 
 const TableRowItem = (props: TableRowItemProps) => {
@@ -18,10 +20,11 @@ const TableRowItem = (props: TableRowItemProps) => {
       <th scope="row">
         <img
           className="float-start me-3 mb-lg-0 mb-3"
-          src={`/img/${icon}.png`}
+          src={`${process.env.NEXT_PUBLIC_IMG}/${icon}`}
           width={80}
           height={60}
           alt="thumbnail"
+          onError={({ currentTarget }) => onImageErr(currentTarget, "game")}
         />
         <div className="game-title-header">
           <p className="game-title fw-medium text-start color-palette-1 m-0">
@@ -33,15 +36,17 @@ const TableRowItem = (props: TableRowItemProps) => {
         </div>
       </th>
       <td>
-        <p className="fw-medium color-palette-1 m-0">{item} Gold</p>
+        <p className="fw-medium color-palette-1 m-0">{item}</p>
       </td>
       <td>
-        <p className="fw-medium text-start color-palette-1 m-0">{price}</p>
+        <p className="fw-medium text-start color-palette-1 m-0">
+          <FormatRupiah nominal={price} />
+        </p>
       </td>
       <td>
         <div>
           <span className={classStatus}></span>
-          <p className="fw-medium text-start color-palette-1 m-0 position-relative">
+          <p className="fw-medium text-start color-palette-1 m-0 position-relative trans-status">
             {status}
           </p>
         </div>

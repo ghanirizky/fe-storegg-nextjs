@@ -86,7 +86,7 @@ const CheckoutPage = (props: CheckoutProps) => {
             accountId={accName}
             bankAccName={bankAccName}
           />
-          <CheckoutConfirmation  payload={checkoutPayload!}/>
+          <CheckoutConfirmation payload={checkoutPayload!} />
         </div>
       </section>
     </>
@@ -95,7 +95,15 @@ const CheckoutPage = (props: CheckoutProps) => {
 
 export default CheckoutPage;
 
-export const getServerSideProps = ({ req }: any) => {
+interface GetServerSideProps {
+  req: {
+    cookies: {
+      token: string;
+    };
+  };
+}
+
+export const getServerSideProps = ({ req }: GetServerSideProps) => {
   const { token } = req.cookies;
 
   if (!token) {

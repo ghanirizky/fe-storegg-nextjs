@@ -3,7 +3,7 @@ import jwtDecode from "jwt-decode";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { getCookieToken } from "../../../helper";
+import { getCookieToken, onImageErr } from "../../../helper";
 import { JWTPayloadTypes } from "../../../services/data-types";
 import LoginMenu from "./LoginMenu";
 
@@ -43,7 +43,7 @@ const Auth = () => {
               className="rounded-circle"
               width="40"
               height="40"
-              alt=""
+              onError={({ currentTarget }) => onImageErr(currentTarget)}
             />
           </a>
 

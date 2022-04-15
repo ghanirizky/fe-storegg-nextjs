@@ -5,6 +5,7 @@ import {
   PaymentTypes,
 } from "../../../services/data-types";
 import NumberFormat from "react-number-format";
+import FormatRupiah from "../../atoms/FormatRupiah";
 
 interface CheckoutPaymentTypes {
   bank: BankTypes;
@@ -42,37 +43,19 @@ const CheckoutDetail = (props: CheckoutDetailProps) => {
         <p className="text-lg color-palette-1 mb-20">
           Price{" "}
           <span className="purchase-details">
-            <NumberFormat
-              value={nominalItem?.price}
-              displayType={"text"}
-              thousandSeparator="."
-              decimalSeparator=","
-              prefix={"Rp "}
-            />
+            <FormatRupiah nominal={nominalItem?.price} />
           </span>
         </p>
         <p className="text-lg color-palette-1 mb-20">
           Tax (10%){" "}
           <span className="purchase-details">
-            <NumberFormat
-              value={tax}
-              displayType={"text"}
-              thousandSeparator="."
-              decimalSeparator=","
-              prefix={"Rp "}
-            />
+            <FormatRupiah nominal={nominalItem?.price} />
           </span>
         </p>
         <p className="text-lg color-palette-1 mb-20">
           Total{" "}
           <span className="purchase-details color-palette-4">
-            <NumberFormat
-              value={nominalItem?.price + tax}
-              displayType={"text"}
-              thousandSeparator="."
-              decimalSeparator=","
-              prefix={"Rp "}
-            />
+            <FormatRupiah nominal={nominalItem?.price + tax} />
           </span>
         </p>
       </div>

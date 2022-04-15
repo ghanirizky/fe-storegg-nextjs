@@ -3,7 +3,15 @@ import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import { JWTPayloadTypes } from "../services/data-types";
 
-export const checkResponseStatus = (response: AxiosResponse) => {
+interface callApiResponseTypes {
+  error: boolean;
+  message: string;
+  data: any;
+}
+
+export const checkResponseStatus = (
+  response: AxiosResponse
+): callApiResponseTypes => {
   if (String(response?.status)[0] !== "2") {
     return {
       error: true,
@@ -19,7 +27,9 @@ export const checkResponseStatus = (response: AxiosResponse) => {
   };
 };
 
-export const getCookieToken = (decode: boolean = false) => {
+export const getCookieToken = (
+  decode: boolean = false
+): String | JWTPayloadTypes | false => {
   const token64 = Cookies.get("token");
   if (token64) {
     const token = atob(token64);
@@ -27,4 +37,13 @@ export const getCookieToken = (decode: boolean = false) => {
     return token;
   }
   return false;
+};
+
+export const onImageErr = (
+  currentTarget: EventTarget & HTMLImageElement,
+  image: "profile" | "game" = "profile"
+): void => {
+  currentTarget.onerror = null;
+  currentTarget.src =
+    image == "profile" ? "/img/default-profile.png" : "/img/default-game.png";
 };
