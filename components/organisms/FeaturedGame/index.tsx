@@ -8,8 +8,8 @@ const FeaturedGame = () => {
 
   const getFeatureGameList = useCallback(async() => {
     const data = await getFeaturedGame()
-    setGameList(data);
-
+    console.log(data)
+    setGameList(data.data);
   }, [getFeaturedGame])
 
   useEffect(() => {

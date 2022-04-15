@@ -1,23 +1,28 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { checkResponseStatus, getCookieToken } from "../../helper";
 
-const URL_API = `${process.env.NEXT_PUBLIC_API}/${process.env.NEXT_PUBLIC_API_VER}`;
+interface callApiProps extends AxiosRequestConfig {
+  authToken?: boolean;
+}
 
-export const callAPI = async ({ url, method, data }: AxiosRequestConfig) => {
-  const response = await axios({ url, method, data }).catch(
-    (err) => err.response
-  );
-
-  if (String(response?.status)[0] !== "2") {
-    return {
-      error: true,
-      message: response.data?.message ?? "Internal server error",
-      data: response.data.data,
-    };
+export const callAPI = async ({
+  url,
+  method,
+  data,
+  authToken = false,
+}: callApiProps) => {
+  const URL_API : string = `${process.env.NEXT_PUBLIC_API}/${process.env.NEXT_PUBLIC_API_VER}`;
+  let headers: any = {};
+  if (authToken) {
+    const token = getCookieToken() as string;
+    headers.authorization = `Bearer ${token}`;
   }
+  const response : AxiosResponse = await axios({
+    url: `${URL_API}${url}`,
+    method,
+    data,
+    headers,
+  }).catch((err) => err.response);
 
-  return {
-    error: false,
-    message: "Success",
-    data: response.data.data,
-  };
+  return checkResponseStatus(response);
 };

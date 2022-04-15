@@ -3,32 +3,27 @@ import jwtDecode from "jwt-decode";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { getCookieToken } from "../../../helper";
 import { JWTPayloadTypes } from "../../../services/data-types";
 import LoginMenu from "./LoginMenu";
-
-interface AuthProps {
-  isLogin?: boolean;
-}
 
 const Auth = () => {
   const [avatar, setAvatar] = useState("");
   const [isLogin, setIsLogin] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   useEffect(() => {
-    const token64 = Cookies.get("token");
-    if (token64) {
-      const token: string = atob(token64);
-      const payload: JWTPayloadTypes = jwtDecode(token);
+    const token = getCookieToken(true) as JWTPayloadTypes;
+    if (token) {
       setIsLogin(true);
-      setAvatar(payload.player.avatar ?? "");
+      setAvatar(token.player.avatar ?? "");
     }
   }, []);
 
   const onLogout = () => {
-    Cookies.remove('token')
-    setIsLogin(false)
-    router.push('/')
-  }
+    Cookies.remove("token");
+    setIsLogin(false);
+    router.push("/");
+  };
 
   if (isLogin) {
     return (
@@ -63,7 +58,7 @@ const Auth = () => {
               href="/member/edit-profile"
             ></LoginMenu>
             <li onClick={onLogout}>
-                <a className="dropdown-item text-lg color-palette-2">Log out</a>
+              <a className="dropdown-item text-lg color-palette-2">Log out</a>
             </li>
           </ul>
         </div>

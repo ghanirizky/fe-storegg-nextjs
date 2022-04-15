@@ -24,9 +24,7 @@ const SignInForm = () => {
     const tokenBase64 = btoa(token);
     Cookies.set("token", tokenBase64, { expires: 1 });
     toast.success("Login berhasil");
-    setTimeout(() => {
-      router.push("/");
-    }, 1500);
+    return router.push("/");
   };
 
   return (

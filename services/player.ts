@@ -1,21 +1,33 @@
-import axios from "axios";
+import { CheckOutPayloadTypes } from "./data-types";
+import { callAPI } from "../config/api";
 
-const URL_API = `${process.env.NEXT_PUBLIC_API}/${process.env.NEXT_PUBLIC_API_VER}`
-
-export const getFeaturedGame = async () => {
-  const URL = `${URL_API}/players/landingpage`;
-  const response = await axios.get(URL);
-  return response.data.data;
+export const getFeaturedGame = async () : Promise<any>=> {
+  return callAPI({
+    url: `/players/landingpage`,
+    method: "GET",
+  });
 };
 
-export const getVoucherDetail = async (id: string) => {
-  const URL = `${URL_API}/players/${id}/detail`;
-  const response = await axios.get(URL);
-  return response.data.data;
+export const getVoucherDetail = async (id: string) : Promise<any> => {
+  return callAPI({
+    url: `/players/${id}/detail`,
+    method: "GET",
+  });
 };
 
-export const getGameCategory = async () => {
-  const URL = `${URL_API}/players/category`;
-  const response = await axios.get(URL);
-  return response.data.data;
+export const getGameCategory = async () : Promise<any> => {
+  return callAPI({
+    url: `/players/category`,
+    method: "GET",
+  });
+};
+
+
+export const checkout = async (payload: CheckOutPayloadTypes) : Promise<any> => {
+  return callAPI({
+    url: `/players/checkout`,
+    method: "POST",
+    data: payload,
+    authToken : true
+  });
 };

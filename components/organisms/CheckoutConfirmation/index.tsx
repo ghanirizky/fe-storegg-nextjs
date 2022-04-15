@@ -1,16 +1,27 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { CheckOutPayloadTypes } from "../../../services/data-types";
+import { checkout } from "../../../services/player";
 
 const CheckoutConfirmation = (props: { payload: CheckOutPayloadTypes }) => {
   const [checkBox, setCheckBox] = useState(false);
+  const router = useRouter()
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (!checkBox)
       return toast.error("Pastikan anda telah melakukan pembayaran");
+    const { payload } = props;
 
-    const {payload} = props;
-    console.log(payload);
+    if (payload) {
+      const result = await checkout(payload);
+      if (result.error) return toast.error(result.message);
+      toast.success("Checkout Success !");
+      router.push('/complete-checkout')
+      return;
+    }
+
+    return;
   };
 
   return (
