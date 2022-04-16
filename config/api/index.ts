@@ -3,6 +3,7 @@ import { checkResponseStatus, getCookieToken } from "../../helper";
 
 interface callApiProps extends AxiosRequestConfig {
   authToken?: boolean;
+  serverToken?: string;
 }
 
 export const callAPI = async ({
@@ -10,14 +11,16 @@ export const callAPI = async ({
   method,
   data,
   authToken = false,
+  serverToken,
 }: callApiProps) => {
-  const URL_API : string = `${process.env.NEXT_PUBLIC_API}/${process.env.NEXT_PUBLIC_API_VER}`;
+  const URL_API: string = `${process.env.NEXT_PUBLIC_API}/${process.env.NEXT_PUBLIC_API_VER}`;
   let headers: any = {};
-  if (authToken) {
-    const token = getCookieToken() as string;
-    headers.authorization = `Bearer ${token}`;
-  }
-  const response : AxiosResponse = await axios({
+
+  if (serverToken) headers.authorization = `Bearer ${serverToken}`;
+  else if (authToken)
+    headers.authorization = `Bearer ${getCookieToken() as string}`;
+
+  const response: AxiosResponse = await axios({
     url: `${URL_API}${url}`,
     method,
     data,

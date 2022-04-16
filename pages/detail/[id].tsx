@@ -9,16 +9,16 @@ import { getVoucherDetail } from "../../services/player";
 
 const DetailPage = () => {
   const { query, isReady } = useRouter();
-  const [voucher, setVoucher] = useState<VoucherTypes>()
-  const [nominals, setNominals] = useState([])
-  const [payments, setPayments] = useState([])
+  const [voucher, setVoucher] = useState<VoucherTypes>();
+  const [nominals, setNominals] = useState([]);
+  const [payments, setPayments] = useState([]);
 
   const getVoucherDetailAPI = useCallback(async (id: any) => {
-    const data = await getVoucherDetail(id);
-    setVoucher(data.voucher)
-    localStorage.setItem('data-item', JSON.stringify(data.voucher))
-    setNominals(data.voucher?.nominals)
-    setPayments(data.payment)
+    const result = await getVoucherDetail(id);
+    setVoucher(result.data.voucher);
+    localStorage.setItem("data-item", JSON.stringify(result.data.voucher));
+    setNominals(result.data.voucher?.nominals);
+    setPayments(result.data.payment);
   }, []);
 
   useEffect(() => {
@@ -40,12 +40,16 @@ const DetailPage = () => {
           </div>
           <div className="row">
             <div className="col-xl-3 col-lg-4 col-md-5 pb-30 pb-md-0 pe-md-25 text-md-start">
-              <TopUpItem type="mobile" data = {voucher} />
+              <TopUpItem type="mobile" data={voucher} />
             </div>
             <div className="col-xl-9 col-lg-8 col-md-7 ps-md-25">
-              <TopUpItem type="desktop" data = {voucher} />
+              <TopUpItem type="desktop" data={voucher} />
               <hr />
-              <TopUpForm nominals = {nominals} payments = {payments} voucher ={voucher}/>
+              <TopUpForm
+                nominals={nominals}
+                payments={payments}
+                voucher={voucher}
+              />
             </div>
           </div>
         </div>

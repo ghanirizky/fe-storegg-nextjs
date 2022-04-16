@@ -23,7 +23,6 @@ const TableRowItem = (props: TableRowItemProps) => {
           src={`${process.env.NEXT_PUBLIC_IMG}/${icon}`}
           width={80}
           height={60}
-          alt="thumbnail"
           onError={({ currentTarget }) => onImageErr(currentTarget, "game")}
         />
         <div className="game-title-header">

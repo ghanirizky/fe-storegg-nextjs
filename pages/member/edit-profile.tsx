@@ -1,8 +1,13 @@
+import jwtDecode from "jwt-decode";
 import Image from "next/image";
 import Input from "../../components/atoms/Input";
 import SideBar from "../../components/organisms/SideBar";
+import { onImageErr } from "../../helper";
+import { JWTPayloadTypes, PlayerTypes } from "../../services/data-types";
 
-const MemberEditPage = () => {
+const MemberEditPage = (props : {user : PlayerTypes}) => {
+  const {user} = props
+  console.log(user)
   return (
     <>
       <SideBar activeMenu="Settings" />
@@ -13,24 +18,9 @@ const MemberEditPage = () => {
             <div className="bg-card pt-30 ps-30 pe-30 pb-30">
               <form action="">
                 <div className="photo d-flex">
-                  <div className="position-relative me-20">
-                    <img
-                      src="/img/avatar-1.png"
-                      width="90"
-                      height="90"
-                      className="avatar img-fluid"
-                    />
-                    <div className="avatar-overlay position-absolute top-0 d-flex justify-content-center align-items-center">
-                      <Image
-                        src={`/icon/avatar-overlay.svg`}
-                        width={24}
-                        height={24}
-                      />
-                    </div>
-                  </div>
                   <div className="image-upload">
-                    <label for="avatar">
-                      <Image src={`/icon/upload.svg`} width={90} height={90} />
+                    <label htmlFor="avatar">
+                      <img src={`${process.env.NEXT_PUBLIC_IMG}/${user?.avatar}`} width={90} height={90}  onError={({ currentTarget }) => onImageErr(currentTarget, "upload")}/>
                     </label>
                     <input
                       id="avatar"
@@ -41,14 +31,19 @@ const MemberEditPage = () => {
                   </div>
                 </div>
                 <div className="pt-30">
-                 <Input label="Full Name" placeholder = "Enter your name" />
+                  <Input label="Full Name" placeholder="Enter your name" value={user.name} />
                 </div>
                 <div className="pt-30">
-                <Input label="Email Address" placeholder = "Enter your email address"/>
+                  <Input
+                    label="Email Address"
+                    placeholder="Enter your email address"
+                    value={user.email}
+                    disabled
+                  />
                 </div>
-                <div className="pt-30">
-                  <Input label="Phone" placeholder = "Enter your phone number"/>
-                </div>
+                {/* <div className="pt-30">
+                  <Input label="Phone" placeholder="Enter your phone number"/>
+                </div> */}
                 <div className="button-group d-flex flex-column pt-50">
                   <button
                     type="submit"
@@ -68,3 +63,33 @@ const MemberEditPage = () => {
 };
 
 export default MemberEditPage;
+
+interface GetServerSideProps {
+  req: {
+    cookies: {
+      token: string;
+    };
+  };
+}
+
+export const getServerSideProps = ({ req }: GetServerSideProps) => {
+  const { token } = req.cookies;
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/sign-in",
+        permanent: false,
+      },
+    };
+  }
+
+  const jwtToken: string = Buffer.from(token, "base64").toString("ascii");
+  const payload: JWTPayloadTypes = jwtDecode(jwtToken);
+  const user: PlayerTypes = payload.player;
+  return {
+    props: {
+      user,
+    },
+  };
+};

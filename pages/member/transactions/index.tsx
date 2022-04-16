@@ -1,7 +1,7 @@
 import SideBar from "../../../components/organisms/SideBar";
 import TransactionContent from "../../../components/organisms/TransactionsContent";
 
-const MemberTransactionDetail = () => {
+const MemberTransactions = () => {
   return (
     <>
       <SideBar activeMenu="Transactions" />
@@ -10,4 +10,28 @@ const MemberTransactionDetail = () => {
   );
 };
 
-export default MemberTransactionDetail;
+export default MemberTransactions;
+
+interface GetServerSideProps {
+  req: {
+    cookies: {
+      token: string;
+    };
+  };
+}
+
+export const getServerSideProps = ({ req }: GetServerSideProps) => {
+  const { token } = req.cookies;
+
+  if (!token)
+    return {
+      redirect: {
+        destination: "/sign-in",
+        permanent: false,
+      },
+    };
+
+  return {
+    props: {},
+  };
+};

@@ -30,11 +30,3 @@ export const checkout = async (payload: CheckOutPayloadTypes) => {
     authToken: true,
   });
 };
-
-export const dashboard = async () => {
-  return callAPI({
-    url: `/players/dashboard`,
-    method: "GET",
-    authToken: true,
-  });
-};

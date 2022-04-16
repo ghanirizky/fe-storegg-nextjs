@@ -27,11 +27,11 @@ const OverviewContent = (props: MemberOverview) => {
               {transOverview?.map((item) => {
                 return (
                   <Category
+                    key={item._id}
                     nominal={item.value}
                     icon={item.name == "Mobile" ? "ic-mobile" : "ic-desktop"}
                   >
-                    Game
-                    <br /> {item.name}
+                    Game <br /> {item.name}
                   </Category>
                 );
               })}
@@ -58,7 +58,8 @@ const OverviewContent = (props: MemberOverview) => {
                 {transHist?.map((item) => {
                   return (
                     <TableRowItem
-                      icon="overview-1"
+                      key={item._id}
+                      icon={item.historyVoucherTopup.thumbnail}
                       game={item.historyVoucherTopup.gameName}
                       category={item.historyVoucherTopup.category}
                       item={`${item.historyVoucherTopup.coinQuantity} ${item.historyVoucherTopup.coinName}`}

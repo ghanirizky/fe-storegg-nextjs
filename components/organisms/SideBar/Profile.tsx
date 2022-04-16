@@ -8,7 +8,6 @@ const Profile = () => {
 
   useEffect(() => {
     const token = getCookieToken(true) as JWTPayloadTypes;
-    console.log(token);
     if (token) setPlayer(token.player);
   }, []);
 

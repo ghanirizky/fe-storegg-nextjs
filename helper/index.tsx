@@ -41,9 +41,15 @@ export const getCookieToken = (
 
 export const onImageErr = (
   currentTarget: EventTarget & HTMLImageElement,
-  image: "profile" | "game" = "profile"
+  image: "profile" | "game" | 'upload' = "profile"
 ): void => {
+  let src = (() : string => {
+    if(image == 'profile') return "/img/default-profile.png"
+    else if(image == 'game') return  "/img/default-game.png"
+    else if(image =='upload') return '/icon/upload.svg'
+    return '/img/default-profile.png'
+  })
+
   currentTarget.onerror = null;
-  currentTarget.src =
-    image == "profile" ? "/img/default-profile.png" : "/img/default-game.png";
+  currentTarget.src = src()
 };

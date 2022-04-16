@@ -10,7 +10,7 @@ import {
   PlayerTypes,
   TransactionTypes,
 } from "../../services/data-types";
-import { dashboard } from "../../services/player";
+import { dashboard } from "../../services/member";
 
 interface MemberOverview {
   history: TransactionTypes[];

@@ -1,12 +1,15 @@
+import { TransactionTypes } from "../../../services/data-types";
 import DetailRow from "./DetailRow";
 
-const TransactionDetailContent = () => {
+const TransactionDetailContent = (props: { transaction: TransactionTypes }) => {
+  const { transaction } = props;
+
   return (
     <section className="transactions-detail overflow-auto">
       <main className="main-wrapper">
         <div className="ps-lg-0">
           <h2 className="text-4xl fw-bold color-palette-1 mb-30">
-            Details #GG001
+            Details {transaction?._id}
           </h2>
           <div className="details">
             <div className="main-content main-content-card overflow-auto">
@@ -16,7 +19,7 @@ const TransactionDetailContent = () => {
                     <div className="pe-4">
                       <div className="cropped">
                         <img
-                          src="/img/Thumbnail-3.png"
+                          src={`${process.env.NEXT_PUBLIC_IMG}/${transaction?.historyVoucherTopup.thumbnail}`}
                           width="200"
                           height="130"
                           className="img-fluid"
@@ -26,15 +29,18 @@ const TransactionDetailContent = () => {
                     </div>
                     <div>
                       <p className="fw-bold text-xl color-palette-1 mb-10">
-                        Mobile Legends:
-                        <br /> The New Battle 2021
+                        {transaction?.historyVoucherTopup.gameName}
                       </p>
-                      <p className="color-palette-2 m-0">Category: Mobile</p>
+                      <p className="color-palette-2 m-0">
+                        Category: {transaction?.category.name}
+                      </p>
                     </div>
                   </div>
                   <div>
-                    <p className="fw-medium text-center label pending m-0 rounded-pill">
-                      Pending
+                    <p
+                      className={`fw-medium text-center label ${transaction?.status} m-0 rounded-pill trans-status`}
+                    >
+                      {transaction?.status}
                     </p>
                   </div>
                 </div>
@@ -43,14 +49,22 @@ const TransactionDetailContent = () => {
                   <h2 className="fw-bold text-xl color-palette-1 mb-20">
                     Purchase Details
                   </h2>
-                  <DetailRow label="Your Game ID" value="masayoshizero" />
-                  <DetailRow label="Order ID" value="GG001" />
-                  <DetailRow label="Item" value="250 Diamonds" />
-                  <DetailRow label="Price" value={42280500} />
-                  <DetailRow label="Tax (10%)" value={4228000} />
+                  <DetailRow
+                    label="Your Game ID"
+                    value={transaction?.accountUser}
+                  />
+                  <DetailRow label="Order ID" value={transaction?._id} />
+                  <DetailRow
+                    label="Item"
+                    value={`${
+                      transaction?.historyVoucherTopup.coinQuantity ?? ""
+                    } ${transaction?.historyVoucherTopup.coinName ?? ""}`}
+                  />
+                  <DetailRow label="Price" value={transaction?.value} />
+                  <DetailRow label="Tax (10%)" value={transaction?.tax} />
                   <DetailRow
                     label="Total"
-                    value={55000600}
+                    value={transaction?.value + transaction?.tax}
                     className="color-palette-4"
                   />
                 </div>
@@ -61,15 +75,24 @@ const TransactionDetailContent = () => {
 
                   <DetailRow
                     label="Your Account Name"
-                    value="Masayoshi Angga Zero"
+                    value={transaction?.name}
                   />
-                  <DetailRow label="Type" value="Worldwide Transfer" />
-                  <DetailRow label="Bank Name" value="Mandiri" />
+                  <DetailRow
+                    label="Type"
+                    value={transaction?.historyPayment.type}
+                  />
+                  <DetailRow
+                    label="Bank Name"
+                    value={transaction?.historyPayment.bankName}
+                  />
                   <DetailRow
                     label="Bank Account Name"
-                    value="PT Store GG Indonesia"
+                    value={transaction?.historyPayment.name}
                   />
-                  <DetailRow label="Bank Number" value="1800 - 9090 - 2021" />
+                  <DetailRow
+                    label="Bank Number"
+                    value={transaction?.historyPayment.noRekening}
+                  />
                 </div>
                 <div className="d-md-block d-flex flex-column w-100">
                   <a
