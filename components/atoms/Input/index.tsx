@@ -1,7 +1,7 @@
-interface InputProps {
+import { InputHTMLAttributes } from 'react';
+
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  placeholder: string;
-  value : string|number
 }
 
 const Input = (props: InputProps) => {

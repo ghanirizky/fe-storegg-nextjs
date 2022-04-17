@@ -1,14 +1,21 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { getCookieToken, onImageErr } from "../../../helper";
 import { JWTPayloadTypes, PlayerTypes } from "../../../services/data-types";
+import { getProfile } from "../../../services/member";
 
 const Profile = () => {
   const [player, setPlayer] = useState<PlayerTypes>();
 
+  const getProfileData = async () => {
+    const result = await getProfile();
+    if (result.error) return toast.error(result.message);
+    setPlayer(result.data);
+  };
+
   useEffect(() => {
-    const token = getCookieToken(true) as JWTPayloadTypes;
-    if (token) setPlayer(token.player);
+    getProfileData();
   }, []);
 
   return (

@@ -7,11 +7,11 @@ import { getGameCategory } from "../services/player";
 import { toast } from "react-toastify";
 
 const SignUpPhotoPage = () => {
-  const [gameCategory, setGameCategory] = useState([]);
-  const [favCategory, setFavCategory] = useState("");
+  const [gameCategory, setGameCategory] = useState<any>([]);
+  const [favCategory, setFavCategory] = useState<any>("");
   const [image, setImage] = useState<any>([]);
-  const [imagePreview, setImagePreview] = useState(`/icon/upload.svg`);
-  const [userForm, setUserForm] = useState({
+  const [imagePreview, setImagePreview] = useState<any>(`/icon/upload.svg`);
+  const [userForm, setUserForm] = useState<any>({
     name: "",
     email: "",
     password: "",
@@ -21,8 +21,8 @@ const SignUpPhotoPage = () => {
 
   const getGameCategoryAPI = useCallback(async () => {
     const response = await getGameCategory();
-    setGameCategory(response);
-    setFavCategory(response[0]?._id);
+    setGameCategory(response.data);
+    setFavCategory(response.data[0]?._id);
   }, [getGameCategory]);
 
   const getUserForm = useCallback(async () => {

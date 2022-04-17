@@ -24,3 +24,21 @@ export const transHistoryDetail = async (id: string, token: string) => {
     serverToken: token,
   });
 };
+
+export const getProfile = async() => {
+  return callAPI({
+    url: `/players/profile`,
+    method: "GET",
+    authToken : true
+  });
+}
+
+export const updateProfile = async (payload: any) => {
+  return callAPI({
+    url: `/players/profile`,
+    method: "put",
+    data : payload,
+    authToken : true
+  });
+};
+
