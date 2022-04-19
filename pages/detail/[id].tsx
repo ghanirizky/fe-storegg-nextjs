@@ -1,30 +1,22 @@
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
 import Footer from "../../components/organisms/Footer";
 import Navbar from "../../components/organisms/Navbar";
 import TopUpForm from "../../components/organisms/TopUpForm";
 import TopUpItem from "../../components/organisms/TopUpItem";
-import { VoucherTypes } from "../../services/data-types";
-import { getVoucherDetail } from "../../services/player";
+import {
+  GameItemTypes,
+  NominalTypes,
+  PaymentTypes,
+  VoucherTypes,
+} from "../../services/data-types";
+import { getFeaturedGame, getVoucherDetail } from "../../services/player";
 
-const DetailPage = () => {
-  const { query, isReady } = useRouter();
-  const [voucher, setVoucher] = useState<VoucherTypes>();
-  const [nominals, setNominals] = useState([]);
-  const [payments, setPayments] = useState([]);
+interface TopUpFormProps {
+  nominals: NominalTypes[];
+  payments: PaymentTypes[];
+  voucher: VoucherTypes | undefined;
+}
 
-  const getVoucherDetailAPI = useCallback(async (id: any) => {
-    const result = await getVoucherDetail(id);
-    setVoucher(result.data.voucher);
-    localStorage.setItem("data-item", JSON.stringify(result.data.voucher));
-    setNominals(result.data.voucher?.nominals);
-    setPayments(result.data.payment);
-  }, []);
-
-  useEffect(() => {
-    if (isReady) getVoucherDetailAPI(query.id);
-  }, [isReady]);
-
+const DetailPage = ({ voucher, nominals, payments }: TopUpFormProps) => {
   return (
     <>
       <Navbar />
@@ -60,3 +52,37 @@ const DetailPage = () => {
 };
 
 export default DetailPage;
+
+export async function getStaticPaths() {
+  const data = await getFeaturedGame();
+  const paths = data.data.map((item: GameItemTypes) => {
+    return {
+      params: {
+        id: item._id,
+      },
+    };
+  });
+
+  return {
+    paths,
+    fallback: false,
+  };
+}
+
+interface GetStaticProps {
+  params: {
+    id: string;
+  };
+}
+
+export async function getStaticProps({ params }: GetStaticProps) {
+  const { id } = params;
+  const result = await getVoucherDetail(id);
+  return {
+    props: {
+      voucher: result.data.voucher,
+      nominals: result.data.voucher?.nominals,
+      payments: result.data.payment,
+    },
+  };
+}

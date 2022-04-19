@@ -8,7 +8,6 @@ const FeaturedGame = () => {
 
   const getFeatureGameList = useCallback(async() => {
     const data = await getFeaturedGame()
-    console.log(data)
     setGameList(data.data);
   }, [getFeaturedGame])
 
