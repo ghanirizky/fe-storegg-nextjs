@@ -15,15 +15,15 @@ export const checkResponseStatus = (
   if (String(response?.status)[0] !== "2") {
     return {
       error: true,
-      message: response.data?.message ?? "Internal server error",
-      data: response.data.data,
+      message: response?.data?.message ?? "Internal server error",
+      data: response?.data?.data,
     };
   }
 
   return {
     error: false,
     message: "Success",
-    data: response.data.data,
+    data: response?.data?.data,
   };
 };
 
