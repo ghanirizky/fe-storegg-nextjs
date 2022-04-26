@@ -54,14 +54,20 @@ const DetailPage = ({ voucher, nominals, payments }: TopUpFormProps) => {
 export default DetailPage;
 
 export async function getStaticPaths() {
-  const data = await getFeaturedGame();
-  const paths = data.data.map((item: GameItemTypes) => {
-    return {
-      params: {
-        id: item._id,
-      },
-    };
-  });
+  const data = await getFeaturedGame() 
+  const vouchers = data.data as VoucherTypes[]
+
+  let paths : any = []
+
+  if(vouchers){
+    paths = vouchers.map((item: GameItemTypes) => {
+      return {
+        params: {
+          id: item._id,
+        },
+      };
+    });
+  }
 
   return {
     paths,
