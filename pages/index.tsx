@@ -22,6 +22,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Kami menyediakan jutaaan cara untuk membantu pengalaman gamingmu" />
         <meta name="og:title" content="StoreGG - Get a New Experience in gaming" />
         <meta name="og:description" content="Kami menyediakan jutaaan cara untuk membantu pengalaman gamingmu" />
+        <meta name="og:image" content="https://ik.imagekit.io/0rdat3peflx/storegg_2fXmIig--.png?ik-sdk-version=javascript-1.4.3&updatedAt=1650964666208" />
         {/* <meta name="og:image" content="Kami menyediakan jutaaan cara untuk membantu pengalaman gamingmu" />
         <meta name="og:url" content="Kami menyediakan jutaaan cara untuk membantu pengalaman gamingmu" /> */}
       </Head>
