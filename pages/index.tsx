@@ -8,6 +8,7 @@ import FeaturedGame from "../components/organisms/FeaturedGame";
 import Reached from "../components/organisms/Reached";
 import Story from "../components/organisms/Story";
 import Footer from "../components/organisms/Footer";
+import Head from "next/head";
 
 const Home: NextPage = () => {
   useEffect(() => {
@@ -16,6 +17,14 @@ const Home: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>StoreGG - Get a New Experience in gaming</title>
+        <meta name="description" content="Kami menyediakan jutaaan cara untuk membantu pengalaman gamingmu" />
+        <meta name="og:title" content="StoreGG - Get a New Experience in gaming" />
+        <meta name="og:description" content="Kami menyediakan jutaaan cara untuk membantu pengalaman gamingmu" />
+        {/* <meta name="og:image" content="Kami menyediakan jutaaan cara untuk membantu pengalaman gamingmu" />
+        <meta name="og:url" content="Kami menyediakan jutaaan cara untuk membantu pengalaman gamingmu" /> */}
+      </Head>
       <Navbar />
       <MainBanner />
       <TransactionStep />
