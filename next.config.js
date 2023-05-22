@@ -6,6 +6,6 @@ const nextConfig = {
 module.exports = {
   nextConfig,
   images : {
-    domains : ['be-storegg-server.herokuapp.com']
+    domains : ['be-store-gg.up.railway.app']
   }
 }
